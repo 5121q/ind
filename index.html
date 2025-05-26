@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Списки мов та студентів</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    #output {
+      background-color: #d0e7ff;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 10px;
+    }
+    a {
+      margin-right: 20px;
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h2>Виберіть дані для перегляду:</h2>
+  <a onclick="loadLanguages()">Список мов</a>
+  <a onclick="loadStudents()">Список студентів</a>
+
+  <div id="output">Тут з’явиться інформація...</div>
+
+  <script>
+    async function loadLanguages() {
+      try {
+        const response = await fetch('languages.json');
+        const data = await response.json();
+        let html = '<h3>Мови програмування</h3><ul>';
+        data.forEach(item => {
+          html += `<li>${item.name} — ${item.year}</li>`;
+        });
+        html += '</ul>';
+        document.getElementById('output').innerHTML = html;
+      } catch (error) {
+        document.getElementById('output').innerText = 'Помилка завантаження файлу languages.json';
+      }
+    }
+
+    async function loadStudents() {
+      try {
+        const response = await fetch('students.json');
+        const data = await response.json();
+        let html = '<h3>Список студентів</h3><ul>';
+        data.forEach(student => {
+          html += `<li>${student.lastname} — середній бал: ${student.average}</li>`;
+        });
+        html += '</ul>';
+        document.getElementById('output').innerHTML = html;
+      } catch (error) {
+        document.getElementById('output').innerText = 'Помилка завантаження файлу students.json';
+      }
+    }
+  </script>
+</body>
+</html>
